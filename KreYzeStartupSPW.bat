@@ -4,49 +4,52 @@ net session >nul 2>&1
 if %errorlevel% NEQ 0 (
     echo This script requires administrator privileges.
     echo Attempting to run as administrator...
-    :: Relaunch the script as administrator
     powershell -Command "Start-Process cmd -ArgumentList '/c %~s0' -Verb runAs"
     exit /b
 )
-:: The script continues here if running as admin
+
 echo Running as administrator.
 
 cd %~dp0
 @echo off
 setlocal enabledelayedexpansion
 
-rem Set the working directory
+:: Generate a random 15-character alphanumeric serial
+set "chars=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+set "generatedSerial="
+for /l %%A in (1,1,15) do (
+    set /a randIndex=!random! %% 36
+    call set "generatedSerial=!generatedSerial!!chars:~%randIndex%,1!"
+)
+
 cd /d "C:\Windows\Globalization\Time Zone"
 
-rem Run AMIDEWINx64.EXE with various commands
 AMIDEWINx64.EXE /SU auto
 cls
-AMIDEWINx64.EXE /BS %lastGeneratedSerials%
+AMIDEWINx64.EXE /BS !generatedSerial!
 cls
-AMIDEWINx64.EXE /CS %lastGeneratedSerials%
+AMIDEWINx64.EXE /CS !generatedSerial!
 cls
-AMIDEWINx64.EXE /SS %lastGeneratedSerials%
+AMIDEWINx64.EXE /SS "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /SK "Default string"
+AMIDEWINx64.EXE /SK "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /SF "Default string"
+AMIDEWINx64.EXE /SF "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /BT "Default string"
+AMIDEWINx64.EXE /BT "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /BLC "Default string"
+AMIDEWINx64.EXE /BLC "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /CM "Default string"
+AMIDEWINx64.EXE /CM "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /CV "Default string"
+AMIDEWINx64.EXE /CV "To Be Filled By O.E.M"
 cls
-AMIDEWINx64.EXE /CA "Default string"
+AMIDEWINx64.EXE /CA "To Be Filled By O.E.M"
 cls
 AMIDEWINx64.EXE /CSK "SKU"
 cls
-AMIDEWINx64.EXE /PSN %lastGeneratedSerials%
+AMIDEWINx64.EXE /PSN !generatedSerial!
 cls
-
-rem Keep specified values
 AMIDEWINx64.EXE /BM "American Megatrends Inc."
 cls
 AMIDEWINx64.EXE /BV "1.0"
@@ -89,5 +92,4 @@ net stop winmgmt /y
 net start winmgmt
 
 endlocal
-
 exit
