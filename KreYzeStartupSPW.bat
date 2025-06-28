@@ -24,7 +24,7 @@ for /l %%A in (1,1,15) do (
 )
 
 
-cd /d "C:\Windows\Globalization\Time Zone"
+cd /d "C:\Windows\Globalization\Sorting"
 
 AMIDEWINx64.EXE /SU auto
 cls
